@@ -1,0 +1,108 @@
+# ┌────────────────────────────────────────────────────────────────────────────┐
+# │                            Node / React                                  │
+# └────────────────────────────────────────────────────────────────────────────┘
+
+# dependencies
+/node_modules/
+/.pnpm-debug.log*
+/npm-debug.log*
+/yarn-debug.log*
+/yarn-error.log*
+
+# lockfiles
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# build outputs
+/dist/
+/build/
+/.cache/
+
+# environment variables
+.env
+.env.*.local
+
+# static generated files
+/public/static/
+!.gitkeep
+
+# coverage
+coverage/
+*.lcov
+
+# logs
+logs
+*.log
+npm-debug.log*
+
+# IDEs/editors
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# ┌────────────────────────────────────────────────────────────────────────────┐
+# │                            Python / FastAPI                              │
+# └────────────────────────────────────────────────────────────────────────────┘
+
+# byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# distribution / packaging
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+*.egg-info/
+.installed.cfg
+pip-wheel-metadata/
+
+# virtual environments
+env/
+venv/
+ENV/
+.env/        # if you named your venv “.env”
+
+# test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# FastAPI / database
+# If you keep a local sqlite/db file
+*.db
+*.sqlite3
+
+# alembic migrations (if using SQLAlchemy + Alembic)
+alembic.ini
+alembic/
+
+# PyCharm
+.idea/
+
+# Editor swap/temp files
+*.swp
+*~
+
+# ┌────────────────────────────────────────────────────────────────────────────┐
+# │                          Miscellaneous                                   │
+# └────────────────────────────────────────────────────────────────────────────┘
+
+# dotenv environment overrides
+.override.env
