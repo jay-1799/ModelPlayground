@@ -15,5 +15,7 @@ class Experiment(BaseModel):
     lora_dropout: float
     epochs: int
     batch_size: int
-    metrics: dict | None=None
+    metrics: dict | None = None
+    checkpoint_path: str | None = None
+
 
