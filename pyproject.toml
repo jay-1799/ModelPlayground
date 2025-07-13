@@ -1,0 +1,13 @@
+[tool.ruff]
+# Enforce an 88-char line length
+line-length = 88
+
+# Which error-codes to check. E,F = pycodestyle & pyflakes,
+# I = isort-style import sorting, C = complexity, B = bug-checks, A = flake8-annotations
+select = ["E", "F", "I", "C", "B", "A"]
+
+# Ignore Black-incompatible whitespace rules
+extend-ignore = ["E203", "W503"]
+
+# Enable auto-fixable rules on "ruff --fix"
+fix = true

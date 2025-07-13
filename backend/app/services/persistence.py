@@ -7,6 +7,9 @@ EXPERIMENTS: Dict[int, Experiment] = {}
 def add_dataset(record: DatasetRecord) -> None:
     DATASETS[record.id] = record
 
+def list_datasets() -> list[DatasetRecord]:
+    return list(DATASETS.values())
+
 def get_dataset_path(dataset_id: int) -> str:
     record = DATASETS.get(dataset_id)
     if not record:

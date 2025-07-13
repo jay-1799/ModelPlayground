@@ -1,4 +1,4 @@
-from fastapi import APIRouter, WebSocket, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from ..services import inference
 

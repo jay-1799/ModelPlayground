@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AlertCircle,
   ArrowRight,
@@ -41,29 +41,51 @@ export default function App() {
       createdAt: "2024-01-21",
     },
   ]);
-  const [datasets] = useState([
-    {
-      id: 1,
-      name: "product-faqs.csv",
-      size: "2.4 MB",
-      rows: 1250,
-      uploaded: "2024-01-20",
-    },
-    {
-      id: 2,
-      name: "support-chat.json",
-      size: "5.1 MB",
-      rows: 2300,
-      uploaded: "2024-01-21",
-    },
-    {
-      id: 3,
-      name: "knowledge-base.txt",
-      size: "8.7 MB",
-      rows: 4100,
-      uploaded: "2024-01-19",
-    },
-  ]);
+  // const [datasets] = useState([
+  //   {
+  //     id: 1,
+  //     name: "product-faqs.csv",
+  //     size: "2.4 MB",
+  //     rows: 1250,
+  //     uploaded: "2024-01-20",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "support-chat.json",
+  //     size: "5.1 MB",
+  //     rows: 2300,
+  //     uploaded: "2024-01-21",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "knowledge-base.txt",
+  //     size: "8.7 MB",
+  //     rows: 4100,
+  //     uploaded: "2024-01-19",
+  //   },
+  // ]);
+  const [datasets, setDatasets] = useState([]);
+  const [file, setFile] = useState(null)
+  useEffect(() => {
+    fetch("/api/datasets")
+      .then((res)=> res.json())
+      .then(setDatasets)
+      .catch(() => {})
+  }, [])
+
+  const handleUpload = async (e) => {
+    e.preventDefault();
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch("/api/datasets", {
+      method: "POST",
+      body: formData,
+    })
+    const data = await res.json();
+    setDatasets((d) => [...d, data]);
+    setFile(null)
+  }
 
   const TabButton = ({ id, icon: Icon, label, isActive, onClick }) => (
     <button
@@ -91,16 +113,20 @@ export default function App() {
           </div>
           <div>
             <h3 className="font-semibold text-gray-900">{dataset.name}</h3>
-            <p className="text-sm text-gray-500">
+            {/* <p className="text-sm text-gray-500">
               {dataset.size} • {dataset.rows.toLocaleString()} rows
-            </p>
+            </p> */}
+            <p className="text-sm text-gray-500 break-all">{dataset.path}</p>
           </div>
         </div>
         <button className="text-gray-400 hover:text-gray-600">
           <Eye size={16} />
         </button>
       </div>
-      <div className="text-xs text-gray-500">Uploaded {dataset.uploaded}</div>
+      {/* <div className="text-xs text-gray-500">Uploaded {dataset.uploaded}</div> */}
+      <div className="text-xs text-gray-500">
+        Uploaded {new Date(dataset.created_at).toLocaleString()}
+      </div>
     </div>
   );
 
@@ -174,7 +200,11 @@ export default function App() {
                 Upload Dataset
               </button>
             </div>
-            <div className="border-2 border-dashed border-gray-300 rounded-xl p-12 text-center hover:border-blue-400 hover:bg-blue-50/50 transition-all duration-200 cursor-pointer">
+            {/* <div className="border-2 border-dashed border-gray-300 rounded-xl p-12 text-center hover:border-blue-400 hover:bg-blue-50/50 transition-all duration-200 cursor-pointer"> */}
+            <form
+              onSubmit={handleUpload}
+              className="border-2 border-dashed border-gray-300 rounded-xl p-12 text-center hover:border-blue-400 hover:bg-blue-50/50 transition-all duration-200"
+            >
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Upload size={24} className="text-blue-600" />
               </div>
@@ -184,10 +214,22 @@ export default function App() {
               <p className="text-gray-600 mb-4">
                 Drag and Drop your CSV, JSON, or TXT files here
               </p>
-              <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+              {/* <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
                 Choose Files
+              </button> */}
+              <input
+                type="file"
+                onChange={(e) => setFile(e.target.files[0])}
+                className="mx-auto mb-4"
+              />
+              <button
+                type="submit"
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Upload
               </button>
-            </div>
+
+            </form>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {datasets.map((dataset) => (
                 <DatasetCard
