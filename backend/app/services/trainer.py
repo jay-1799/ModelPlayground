@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from transformers import AutoModelForCasualLM, AutoTokenizer, TrainingArguments, Trainer
+from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Trainer
 from peft import LoraConfig, get_peft_model, TaskType
 
 from . import storage, persistence
@@ -19,7 +19,7 @@ async def run_training(payload: TrainRequest) -> None:
     dataset_path = persistence.get_dataset_path(payload.dataset_id)
 
     # load base mode and tokenizer 
-    model = AutoModelForCasualLM.from_pretrained(payload.model_name)
+    model = AutoModelForCausalLM.from_pretrained(payload.model_name)
     tokenizer = AutoTokenizer.from_pretrained(payload.model_name)
 
     # apply lora 
@@ -27,7 +27,7 @@ async def run_training(payload: TrainRequest) -> None:
         r = payload.lora_r,
         lora_alpha = payload.lora_alpha,
         lora_dropout = payload.lora_dropout,
-        task_type = TaskType.CASUAL_LM,
+        task_type = TaskType.CAUSAL_LM,
     )
     model = get_peft_model(model, lora_config)
 
