@@ -4,3 +4,5 @@ uvicorn
 transformers
 peft
 datasets
+sqlalchemy
+psyopg2-binary
