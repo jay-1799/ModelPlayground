@@ -7,7 +7,7 @@ line-length = 88
 select = ["E", "F", "I", "C", "B", "A"]
 
 # Ignore Black-incompatible whitespace rules
-extend-ignore = ["E203", "W503"]
+extend-ignore = ["E203"]
 
 # Enable auto-fixable rules on "ruff --fix"
 fix = true

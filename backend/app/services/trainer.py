@@ -1,6 +1,6 @@
+from peft import LoraConfig, get_peft_model, TaskType
 from pydantic import BaseModel
 from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Trainer
-from peft import LoraConfig, get_peft_model, TaskType
 
 from . import storage, persistence
 
@@ -32,9 +32,14 @@ async def run_training(payload: TrainRequest) -> None:
     model = get_peft_model(model, lora_config)
 
     with open(dataset_path, "r", encoding="utf-8") as f:
-        lines = [tokenizer(line.strip(), return_tensors="pt") for line in f if line.strip()]
+        lines = [tokenizer(line.strip(), return_tensors="pt") 
+                 for line in f 
+                 if line.strip()]
 
-    args = TrainingArguments(output_dir="./outputs", num_train_epochs=payload.epochs, per_device_train_batch_size=payload.batch_size)
+    args = TrainingArguments(
+        output_dir="./outputs", 
+        num_train_epochs=payload.epochs, 
+        per_device_train_batch_size=payload.batch_size)
 
     class SimpleDataset:
         def __init__(self, items):
@@ -53,4 +58,7 @@ async def run_training(payload: TrainRequest) -> None:
 
     metrics = {"train_loass": trainer.state.log_history[-1].get("loss")}
 
-    persistence.update_experiment(payload.exp_id, metrics=metrics, checkpoint_path=checkpoint_path)
+    persistence.update_experiment(
+        payload.exp_id, 
+        metrics=metrics, 
+        checkpoint_path=checkpoint_path)

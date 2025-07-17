@@ -6,22 +6,17 @@ from ..models import DatasetRecord
 
 router = APIRouter()
 
-_dataset_id_seq = 1
 
 
-@router.post("/")
-async def upload_dataset(file: UploadFile = File(...)) ->  DatasetRecord:
-    global _dataset_id_seq
+@router.post("/", response_model = DatasetRecord)
+async def upload_dataset(file: UploadFile = File(...)) -> DatasetRecord:
     path = storage.save_dataset(file.file, file.filename)
     record = DatasetRecord(
-        id = _dataset_id_seq,
-        name = file.filename,
+        name=file.filename,
         path = path,
-        created_at = datetime.utcnow().isoformat(),
+        created_at=datetime.utcnow().isoformat(),
     )
-    _dataset_id_seq += 1
-    persistence.add_dataset(record)
-    return record
+    return persistence.add_dataset(record)
 
 @router.get("/", response_model=list[DatasetRecord])
 async def list_datasets() -> list[DatasetRecord]:
